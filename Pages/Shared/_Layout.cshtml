@@ -1,19 +1,45 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - RotinaEstudo</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - Rotina de Estudos</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/RotinaEstudo.styles.css" asp-append-version="true" />
+    <style>
+        .navbar-brand {
+            font-weight: bold;
+            color: #2c3e50 !important;
+        }
+        .study-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .study-item {
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+            margin-bottom: 10px;
+        }
+        .btn-study {
+            background: #3498db;
+            color: white;
+            border: none;
+        }
+        .btn-study:hover {
+            background: #2980b9;
+        }
+    </style>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">RotinaEstudo</a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index">
+                    📚 Rotina de Estudos
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -21,16 +47,14 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Início</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -39,7 +63,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - RotinaEstudo - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2025 - Rotina de Estudos - <a asp-area="" asp-page="/Privacy">Privacidade</a>
         </div>
     </footer>
 

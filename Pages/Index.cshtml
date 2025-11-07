@@ -1,10 +1,113 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Sistema de Rotina de Estudos";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mb-4">
+    <h1 class="display-4">Rotina de Estudos</h1>
+    <p class="lead">Organize seus estudos de forma eficiente</p>
 </div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="study-section">
+            <h3>Adicionar Nova Tarefa de Estudo</h3>
+            <!-- Mudei para form method="post" e adicionei name="Tarefa" -->
+            <form method="post">
+                <div class="mb-3">
+                    <label for="Materia" class="form-label">Matéria</label>
+                    <input type="text" class="form-control" id="Materia" name="Materia" required>
+                </div>
+                <div class="mb-3">
+                    <label for="Tema" class="form-label">Tema/Assunto</label>
+                    <input type="text" class="form-control" id="Tema" name="Tema" required>
+                </div>
+                <div class="mb-3">
+                    <label for="TempoEstudoMinutos" class="form-label">Tempo de Estudo (minutos)</label>
+                    <input type="number" class="form-control" id="TempoEstudoMinutos" name="TempoEstudoMinutos" required>
+                </div>
+                <div class="mb-3">
+                    <label for="Prioridade" class="form-label">Prioridade</label>
+                    <select class="form-control" id="Prioridade" name="Prioridade" required>
+                        <option value="Baixa">Baixa</option>
+                        <option value="Média" selected>Média</option>
+                        <option value="Alta">Alta</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-study">Adicionar Tarefa</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="study-section">
+            <h3>Minhas Tarefas de Estudo</h3>
+            <div id="listaTarefas">
+                <!-- Agora carregamos do banco -->
+                @if (Model.Tarefas.Any())
+                {
+                    @foreach (var tarefa in Model.Tarefas)
+                    {
+                        <div class="study-item">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">@tarefa.Materia</h6>
+                                    <p class="mb-1">@tarefa.Tema</p>
+                                    <small class="text-muted">
+                                        ⏱️ @tarefa.TempoEstudoMinutos min •
+                                        <span class="badge @GetBadgeClass(tarefa.Prioridade)">@tarefa.Prioridade</span>
+                                        @if (tarefa.Concluida)
+                                        {
+                                            <span class="badge bg-success">Concluída</span>
+                                        }
+                                    </small>
+                                </div>
+                                <div>
+                                    <form method="post" asp-page-handler="Concluir" style="display: inline;">
+                                        <input type="hidden" name="id" value="@tarefa.Id" />
+                                        <button type="submit" class="btn btn-sm btn-outline-success">✓</button>
+                                    </form>
+                                    <form method="post" asp-page-handler="Excluir" style="display: inline;">
+                                        <input type="hidden" name="id" value="@tarefa.Id" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                onclick="return confirm('Tem certeza que deseja excluir esta tarefa?')">
+                                            🗑️
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-muted">Nenhuma tarefa cadastrada ainda.</p>
+                }
+            </div>
+        </div>
+
+        <!-- Área para exibir estatísticas -->
+        <div class="study-section">
+            <h4>Estatísticas</h4>
+            <div class="bg-light p-3 rounded">
+                <p><strong>Total de Tarefas:</strong> @Model.Tarefas.Count</p>
+                <p><strong>Tempo Total de Estudo:</strong> @Model.Tarefas.Sum(t => t.TempoEstudoMinutos) minutos</p>
+                <p><strong>Tarefas Concluídas:</strong> @Model.Tarefas.Count(t => t.Concluida)</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    private string GetBadgeClass(string prioridade)
+    {
+        return prioridade switch
+        {
+            "Alta" => "bg-danger",
+            "Média" => "bg-warning",
+            "Baixa" => "bg-success",
+            _ => "bg-secondary"
+        };
+    }
+}
